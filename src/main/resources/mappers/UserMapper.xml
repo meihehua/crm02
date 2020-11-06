@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shsxt.crm.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.shsxt.crm.vo.User">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_name, user_pwd, email,phone,is_valid,true_name, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <!-- 通过用户名查询用户对象，返回用户对象 -->
+  <select id="queryUserByName" parameterType="string" resultType="com.shsxt.crm.vo.User">
+    select * from t_user where user_name = #{userName}
+  </select>
+
+  <!-- 修改密码 -->
+  <update id="updateUserPwd">
+    update
+        t_user
+    set
+        user_pwd = #{userPwd}, update_date=now()
+    where
+        id = #{userId}
+  </update>
+
+</mapper>
